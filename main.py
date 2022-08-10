@@ -22,6 +22,10 @@ class Interaction(BaseModel):
 
 app = FastAPI()
 
+################################################
+#               ENDPOINTS
+################################################
+
 @app.get("/")
 async def root():
     return {"message": "Hello World!"}
