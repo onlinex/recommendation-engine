@@ -19,7 +19,10 @@ build-job:
 
 unit-test-job:
   stage: test
+  # pull the built image
+  image: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   script:
+    - poetry run pytest
     - echo "Doing some testing"
 
 lint-test-job:
