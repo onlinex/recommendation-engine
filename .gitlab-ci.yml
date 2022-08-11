@@ -13,6 +13,6 @@ build image:
     # login with user / password
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     #  "-t" to allocate a virtual terminal session within the container, build an image
-    - docker build -t $CI_REGISTRY_IMAGE .
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     # push an image to container registry
-    - docker push $CI_REGISTRY_IMAGE
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
