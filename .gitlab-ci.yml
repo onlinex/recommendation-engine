@@ -2,7 +2,7 @@ some test:
   image: python:3.7
   script:
     - python --version  # For debugging
-    - echo "doing stuff"
+    - echo "----------------------------------------------------"
 
 build image:
   image: docker
