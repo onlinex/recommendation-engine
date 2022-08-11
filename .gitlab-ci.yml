@@ -1,16 +1,17 @@
-before_script:
+some test:
   image: python:3.7
   script:
     - python --version  # For debugging
+    - echo "doing stuff"
 
-build image:
-  image: docker
-  services: 
-    - docker:dind # docker in docker (dind)
-  script:
-    # login with user / password
-    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
-    #  "-t" to allocate a virtual terminal session within the container, build an image
-    - docker build -t $CI_REGISTRY_IMAGE .
-    # push an image to container registry
-    - docker push $CI_REGISTRY_IMAGE
+#build image:
+#  image: docker
+#  services: 
+#    - docker:dind # docker in docker (dind)
+#  script:
+#    # login with user / password
+#    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+#    #  "-t" to allocate a virtual terminal session within the container, build an image
+#    - docker build -t $CI_REGISTRY_IMAGE .
+#    # push an image to container registry
+#    - docker push $CI_REGISTRY_IMAGE
