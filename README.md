@@ -12,6 +12,8 @@
 
 #TODO
 
-- Wrap as docker container, docker image repository
-- Move to GitLab?
-- CI/CD pipeline
+- Deployment pipline
+- Push to the dev. branch
+- Run testing on dev.branch
+- Push to main
+- From main -> push to
