@@ -12,14 +12,21 @@
 
 #PARAM-PAM
 
+- Blue-Green deployment (0 downtime deployment)
+- A/B testing - very frequent automated testing
+
+- People work of features in their feature branch
+- People create MR to dev branch. Invokes Pipleine (build & test), can run in manual
+- Managers create MR from dev to Stage. Invokes Pipeline (build & test), can run in manual
+
+- Stage has some new code now. (Build & test & deploy) to stage (manual)
+- Create MR from Stage to Production (main). Main has some new code now. (Build & test & deploy) to production (manual)
+
+
+
 - noone is allowed to push into the main branch
 - changes to the main branch can only be introduced through a merge request
 - merge request only goes through when the build/test pipeline have run successfully
-- so push to dev -> 
-
-- ideally there is a staging envionment
-- main <- stage (skip for now) <- dev <- feature
-- merge request pipelines run when pushed to main
 
 #TODO
 - Deployment pipline

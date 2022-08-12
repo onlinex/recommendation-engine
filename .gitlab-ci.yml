@@ -1,15 +1,17 @@
-# https://www.tutorialspoint.com/gitlab/gitlab_ci_cd_variables.htm
+# https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
 
 stages:
   - build
   - test # only starts when the build completes successfully
   - deploy # only start when the tests are completed successfully
 
-workflow:
-  rules:
-    # configure the entire pipeline to run in merge request pipelines
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+#workflow:
+#  rules:
+#    # configure the entire pipeline to run in merge request pipelines
+#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+#    - if: $
 
+# build whatever feature, for further testing
 build-job:
   stage: build
   image: docker
@@ -23,9 +25,11 @@ build-job:
     - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     # push an image to container registry (project name / branch)
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-#  only:
-#    # run in merge request pipelines
-#    - merge_requests
+  rules:
+    # always run on MR source
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    # always run on Main branch change (or stage)
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 unit-test-job:
   stage: test
@@ -34,9 +38,12 @@ unit-test-job:
   script:
     - poetry run pytest
     - echo "Doing some testing"
-#  only:
-#    # run in merge request pipelines
-#    - merge_requests
+  rules:
+    # always run on MR source
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    # always run on Main branch change (or stage)
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    
 
 lint-test-job:
   stage: test
@@ -46,9 +53,11 @@ lint-test-job:
     - echo "Doing some linting"
   # Let the pipeline continue running subsequent jobs, even if the job fails
   allow_failure: true
-#  only:
-#    # run in merge request pipelines
-#    - merge_requests
+  rules:
+    # always run on MR source
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    # always run on Main branch change (or stage)
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 deploy-job:
   stage: deploy
@@ -56,7 +65,9 @@ deploy-job:
   script:
     - echo "Doing some deployment"
   rules:
+    # manually on Main or Stage branches
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
+    # otherwise don't run
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       when: never
