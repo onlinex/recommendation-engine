@@ -17,6 +17,10 @@
 - merge request only goes through when the build/test pipeline have run successfully
 - so push to dev -> 
 
+- ideally there is a staging envionment
+- main <- stage (skip for now) <- dev <- feature
+- merge request pipelines run when pushed to main
+
 #TODO
 - Deployment pipline
 - Webhook integration

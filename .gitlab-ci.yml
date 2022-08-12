@@ -16,6 +16,9 @@ build-job:
     - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     # push an image to container registry (project name / branch)
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  only:
+    # run in merge request pipelines
+    - merge_requests
 
 unit-test-job:
   stage: test
@@ -24,6 +27,9 @@ unit-test-job:
   script:
     - poetry run pytest
     - echo "Doing some testing"
+  only:
+    # run in merge request pipelines
+    - merge_requests
 
 lint-test-job:
   stage: test
@@ -31,4 +37,22 @@ lint-test-job:
   script:
     - poetry run flake8
     - echo "Doing some linting"
+  # Let the pipeline continue running subsequent jobs, even if the job fails
   allow_failure: true
+  only:
+    # run in merge request pipelines
+    - merge_requests
+
+deploy-job:
+  stage: deploy
+  image: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  script:
+    - echo "Doing some deployment"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
+  only:
+    # run in merge request pipelines
+    - merge_requests
