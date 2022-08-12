@@ -1,3 +1,5 @@
+# https://www.tutorialspoint.com/gitlab/gitlab_ci_cd_variables.htm
+
 stages:
   - build
   - test # only starts when the build completes successfully
@@ -53,6 +55,3 @@ deploy-job:
       when: always
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       when: manual
-  only:
-    # run in merge request pipelines
-    - merge_requests
