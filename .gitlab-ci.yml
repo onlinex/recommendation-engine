@@ -28,4 +28,5 @@ unit-test-job:
 lint-test-job:
   stage: test
   script:
+    - poetry run flake8
     - echo "Doing some linting"
