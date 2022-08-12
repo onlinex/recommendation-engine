@@ -27,6 +27,7 @@ unit-test-job:
 
 lint-test-job:
   stage: test
+  image: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   script:
     - poetry run flake8
     - echo "Doing some linting"
