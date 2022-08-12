@@ -15,10 +15,10 @@ from pydantic import BaseModel, Field
 # Declare your data model as a class that inherits from BaseModel
 class Interaction(BaseModel):
     # body -> application/JSON
-    user_id: str = Field(example='id1234567') # required
-    item_id: str = Field(example='id1234567') # required
-    action: int = Field(example=4) # required
-    value: Union[float, None] = Field(default=None, example=3.2) # float (optional)
+    user_id: str = Field(example='id1234567')  # required
+    item_id: str = Field(example='id1234567')  # required
+    action: int = Field(example=4)  # required
+    value: Union[float, None] = Field(default=None, example=3.2)  # float (optional)
 
 app = FastAPI()
 

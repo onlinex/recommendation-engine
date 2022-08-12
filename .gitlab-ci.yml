@@ -31,3 +31,4 @@ lint-test-job:
   script:
     - poetry run flake8
     - echo "Doing some linting"
+  allow_failure: true
