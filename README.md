@@ -10,7 +10,7 @@
 - OLAP database
 - OLTP database
 
-#PARAM-PAM
+# CI / CD
 
 - Blue-Green deployment (0 downtime deployment)
 - A/B testing - very frequent automated testing
@@ -22,11 +22,20 @@
 - Stage has some new code now. (Build & test & deploy) to stage (manual)
 - Create MR from Stage to Production (main). Main has some new code now. (Build & test & deploy) to production (manual)
 
+- nobody is allowed to push into the main/stage branches
+- changes to the main/stage branches can only be introduced through a merge request
+- MR only goes through when the build/test pipeline have run successfully
 
+# Docker
 
-- noone is allowed to push into the main branch
-- changes to the main branch can only be introduced through a merge request
-- merge request only goes through when the build/test pipeline have run successfully
+https://docs.docker.com/develop/develop-images/multistage-build/
+
+- Need multi-stage build
+- Run multiple "docker build location --target image_name" on docker file
+- Results in multiple docker images for multiple services
+
+To connect to cluster user kubectl CLI, with file that specifies cluster access
+kubectl --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml "some command here"
 
 #TODO
 - Deployment pipline
@@ -34,3 +43,14 @@
 - FLUX (seems to be the best), ArgoCD, Fleet
 https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 - Cloudflare ensure routing to servers
+
+
+# LOCAL MACHINE CONTRO
+
+- install chocolatey (For windows)
+- install kubectl
+- install kubernetes-helm
+- install flux
+
+installing flux on kubernetes
+flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap gitlab --owner=onlinex --repository=recommendation-engine --branch=main --token-auth
