@@ -48,9 +48,32 @@ https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 # LOCAL MACHINE CONTRO
 
 - install chocolatey (For windows)
-- install kubectl
-- install kubernetes-helm
-- install flux
+- install kubectl (CLI for kubernetes)
+- install kubernetes-helm (CLI for apackage manager for kubernetes)
+- install flux (CLI for CI/CD)
+- isntall k9s (For looking into kubernetes cluster)
 
 installing flux on kubernetes
 flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap gitlab --owner=onlinex --repository=recommendation-engine --branch=main --token-auth
+
+kubectl get all -n flux-system
+
+https://fluxcd.io/docs/cmd/flux_uninstall/
+
+# Something else here
+
+rockylinux
+k8slens
+https://etcd.io/
+https://helm.sh/
+https://kubernetes.io/docs/concepts/workloads/controllers/
+https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
+https://docs.cilium.io/en/v1.9/concepts/clustermesh/
+
+prometheus
+
+There should be a script that can run everything at once. (On a new cluster)
+And kill everything at once (Clean the cluster).
+Each cluster should have namespaces: flux-system, prometheus (metrics), starboard (safety)
+https://anaisurl.com/full-tutorial-getting-started-with-flux-cd/
+https://www.youtube.com/watch?v=5u45lXmhgxA
