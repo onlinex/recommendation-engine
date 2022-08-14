@@ -9,6 +9,7 @@
 - Vector DB
 - OLAP database
 - OLTP database
+- Some frontend
 
 # CI / CD
 
@@ -45,13 +46,53 @@ https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 - Cloudflare ensure routing to servers
 
 
-# LOCAL MACHINE CONTRO
+# LOCAL MACHINE CONTROL
 
 - install chocolatey (For windows)
 - install kubectl (CLI for kubernetes)
+- install docli (CLI for docker)
 - install kubernetes-helm (CLI for apackage manager for kubernetes)
 - install flux (CLI for CI/CD)
 - isntall k9s (For looking into kubernetes cluster)
+
+# Steps
+
+https://thenewstack.io/tutorial-a-gitops-deployment-with-flux-on-digitalocean-kubernetes/
+
+## Authenticate Digital Ocean CLI
+- Authenticate with personal access token
+    doctl auth init --context <NAME>
+- Show contexts
+    doctl auth list
+- Switch context
+    doctl auth switch --context <NAME>
+- Verify account
+    doctl account get
+
+- Download cluster config.
+    - Add cluster credentials to config file at ~/.kube/config
+    - Set current context to "k8s-1-23-9-do-0-fra1-1660326304303"
+
+    doctl k8s clusters kubeconfig save k8s-1-23-9-do-0-fra1-1660326304303
+
+## kubectl
+
+Note: kubectl uses the default kubeconfig file, $HOME/.kube/config.
+
+- Show contexts
+    kubectl config get-contexts
+- Switch between clusters
+    kubectl config use-context k8s-1-23-9-do-0-fra1-1660326304303
+
+## Flux
+
+- Check flux/cluster compatibility
+    flux check --pre
+
+
+- If KUBECONFIG does not exist, kubectl uses the default kubeconfig file, $HOME/.kube/config.
+You can quickly switch between clusters by using the kubectl config use-context command.
+
 
 installing flux on kubernetes
 flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap gitlab --owner=onlinex --repository=recommendation-engine --branch=main --token-auth
@@ -59,6 +100,14 @@ flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap g
 kubectl get all -n flux-system
 
 https://fluxcd.io/docs/cmd/flux_uninstall/
+
+
+flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap gitlab --owner=onlinex --repository=recommendation-engine --branch=main path=./clusters/fra1 --tocken_auth
+
+# Repository structure
+
+- clusters dir contains the Flux configuration per cluster
+
 
 # Something else here
 
