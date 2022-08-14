@@ -60,7 +60,7 @@ https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 https://thenewstack.io/tutorial-a-gitops-deployment-with-flux-on-digitalocean-kubernetes/
 
 ## Authenticate Digital Ocean CLI
-- Authenticate with personal access token
+- Authenticate with personal access token\
     doctl auth init --context <NAME>
 - Show contexts
     doctl auth list
