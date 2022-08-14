@@ -60,34 +60,34 @@ https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 https://thenewstack.io/tutorial-a-gitops-deployment-with-flux-on-digitalocean-kubernetes/
 
 ## Authenticate Digital Ocean CLI
-- Authenticate with personal access token\
-    doctl auth init --context <NAME>
+- Authenticate with personal access token
+    - doctl auth init --context <NAME>
 - Show contexts
-    doctl auth list
+    - doctl auth list
 - Switch context
-    doctl auth switch --context <NAME>
+    - doctl auth switch --context <NAME>
 - Verify account
-    doctl account get
+    - doctl account get
 
-- Download cluster config.
-    - Add cluster credentials to config file at ~/.kube/config
-    - Set current context to "k8s-1-23-9-do-0-fra1-1660326304303"
+- Download cluster config.\
+    Add cluster credentials to config file at ~/.kube/config\
+    Set current context to "k8s-1-23-9-do-0-fra1-1660326304303"
 
-    doctl k8s clusters kubeconfig save k8s-1-23-9-do-0-fra1-1660326304303
+    - doctl k8s clusters kubeconfig save k8s-1-23-9-do-0-fra1-1660326304303
 
 ## kubectl
 
 Note: kubectl uses the default kubeconfig file, $HOME/.kube/config.
 
 - Show contexts
-    kubectl config get-contexts
+    - kubectl config get-contexts
 - Switch between clusters
-    kubectl config use-context k8s-1-23-9-do-0-fra1-1660326304303
+    - kubectl config use-context k8s-1-23-9-do-0-fra1-1660326304303
 
 ## Flux
 
 - Check flux/cluster compatibility
-    flux check --pre
+    - flux check --pre
 
 
 - If KUBECONFIG does not exist, kubectl uses the default kubeconfig file, $HOME/.kube/config.
