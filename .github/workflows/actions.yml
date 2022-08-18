@@ -33,6 +33,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: "{{defaultContext}}:dev"
           push: true
           file: ./Dockerfile
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:latest
