@@ -9,8 +9,14 @@
 - Vector DB
 - OLAP database
 - OLTP database
+- Some frontend
+- Metrics
+- Datree.io
+- https://www.hellomonday.com/
 
-# CI / CD
+# CI / CD pipeline
+
+![alt text](https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png)
 
 - Blue-Green deployment (0 downtime deployment)
 - A/B testing - very frequent automated testing
@@ -34,24 +40,85 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 - Run multiple "docker build location --target image_name" on docker file
 - Results in multiple docker images for multiple services
 
-To connect to cluster user kubectl CLI, with file that specifies cluster access
-kubectl --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml "some command here"
-
-#TODO
+# TODO
 - Deployment pipline
 - Webhook integration
 - FLUX (seems to be the best), ArgoCD, Fleet
 https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 - Cloudflare ensure routing to servers
 
-
-# LOCAL MACHINE CONTRO
+# LOCAL MACHINE CONTROL
 
 - install chocolatey (For windows)
 - install kubectl (CLI for kubernetes)
+- install docli (CLI for docker)
 - install kubernetes-helm (CLI for apackage manager for kubernetes)
 - install flux (CLI for CI/CD)
 - isntall k9s (For looking into kubernetes cluster)
+
+# Steps
+
+https://thenewstack.io/tutorial-a-gitops-deployment-with-flux-on-digitalocean-kubernetes/
+https://github.com/fluxcd/flux2-multi-tenancy
+https://www.gitops.tech/
+https://blog.gurock.com/implement-ab-testing-using-kubernetes/
+https://docs.gitlab.com/ee/ci/introduction/
+https://tanzu.vmware.com/developer/guides/prometheus-multicluster-monitoring/
+
+## Connect GitHub repository to container registry
+
+- Create a secret. Secrets are environment variables that are encrypted.
+    - Settings > Secrets > New secret.
+    - Create a new secret with the name DOCKER_HUB_USERNAME and your Docker ID (username) as value.
+    - Create a new Personal Access Token (PAT). Docker Hub Settings -> Security -> New Access Token.
+    - Add PAT as a secret with name DOCKER_HUB_ACCESS_TOKEN
+
+- The pipeline saves the images to Docker Hub
+
+## Authenticate Digital Ocean CLI
+
+- Authenticate with personal access token
+    - doctl auth init --context <NAME>
+- Show contexts
+    - doctl auth list
+- Switch context
+    - doctl auth switch --context <NAME>
+- Verify account
+    - doctl account get
+
+- Download cluster config.\
+    Add cluster credentials to config file at ~/.kube/config\
+    Set current context to "k8s-1-23-9-do-0-fra1-1660326304303"
+
+    - doctl k8s clusters kubeconfig save k8s-1-23-9-do-0-fra1-1660326304303
+
+## kubectl swith context (switch cluster)
+
+Note: kubectl uses the default kubeconfig file, $HOME/.kube/config.
+Otherwise use: kubectl --kubeconfig=k8s-kubeconfig.yaml "some command here"
+
+- Show contexts
+    - kubectl config get-contexts
+- Switch between clusters
+    - kubectl config use-context k8s-1-23-9-do-0-fra1-1660326304303
+
+## Flux
+
+- Check flux/cluster compatibility
+    - flux check --pre
+
+- Show cluster namespaces
+    - kubectl get ns
+
+- List all pods in the namespace
+    - kubectl get pods
+
+- List all kustomizations and their status
+    - flux get kustomizations
+
+- Set up security credentials. Add ssh deployment key to CI/CD provider (GitLab)
+    - flux identity
+
 
 installing flux on kubernetes
 flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap gitlab --owner=onlinex --repository=recommendation-engine --branch=main --token-auth
@@ -59,6 +126,14 @@ flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap g
 kubectl get all -n flux-system
 
 https://fluxcd.io/docs/cmd/flux_uninstall/
+
+
+flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap gitlab --owner=onlinex --repository=recommendation-engine --branch=main path=./clusters/fra1 --tocken_auth
+
+# Repository structure
+
+- clusters dir contains the Flux configuration per cluster
+
 
 # Something else here
 
