@@ -12,6 +12,7 @@
 - Some frontend
 - Metrics
 - Datree.io
+- https://www.hellomonday.com/
 
 # CI / CD pipeline
 
@@ -38,9 +39,6 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 - Need multi-stage build
 - Run multiple "docker build location --target image_name" on docker file
 - Results in multiple docker images for multiple services
-
-To connect to cluster user kubectl CLI, with file that specifies cluster access
-kubectl --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml "some command here"
 
 # TODO
 - Deployment pipline
@@ -87,6 +85,7 @@ https://tanzu.vmware.com/developer/guides/prometheus-multicluster-monitoring/
 ## kubectl swith context (switch cluster)
 
 Note: kubectl uses the default kubeconfig file, $HOME/.kube/config.
+Otherwise use: kubectl --kubeconfig=k8s-kubeconfig.yaml "some command here"
 
 - Show contexts
     - kubectl config get-contexts
