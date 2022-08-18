@@ -65,6 +65,14 @@ https://blog.gurock.com/implement-ab-testing-using-kubernetes/
 https://docs.gitlab.com/ee/ci/introduction/
 https://tanzu.vmware.com/developer/guides/prometheus-multicluster-monitoring/
 
+## Connect GitHub repository to container registry
+
+- Create a secret. Secrets are environment variables that are encrypted.
+    - Settings > Secrets > New secret.
+    - Create a new secret with the name DOCKER_HUB_USERNAME and your Docker ID (username) as value.
+    - Create a new Personal Access Token (PAT). Docker Hub Settings -> Security -> New Access Token.
+    - Add PAT as a secret with name DOCKER_HUB_ACCESS_TOKEN
+
 ## Authenticate Digital Ocean CLI
 
 - Authenticate with personal access token
