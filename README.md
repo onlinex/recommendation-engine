@@ -73,7 +73,7 @@ https://tanzu.vmware.com/developer/guides/prometheus-multicluster-monitoring/
     - Create a new Personal Access Token (PAT). Docker Hub Settings -> Security -> New Access Token.
     - Add PAT as a secret with name DOCKER_HUB_ACCESS_TOKEN
 
-- The pipeline saves the images to Docker Hub
+- The pipeline saves the images to Docker Hub. Enable inline caching.
 
 ## Authenticate Digital Ocean CLI
 
