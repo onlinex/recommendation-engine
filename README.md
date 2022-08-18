@@ -10,8 +10,12 @@
 - OLAP database
 - OLTP database
 - Some frontend
+- Metrics
+- Datree.io
 
-# CI / CD
+# CI / CD pipeline
+
+![alt text](https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png)
 
 - Blue-Green deployment (0 downtime deployment)
 - A/B testing - very frequent automated testing
@@ -38,13 +42,12 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 To connect to cluster user kubectl CLI, with file that specifies cluster access
 kubectl --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml "some command here"
 
-#TODO
+# TODO
 - Deployment pipline
 - Webhook integration
 - FLUX (seems to be the best), ArgoCD, Fleet
 https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 - Cloudflare ensure routing to servers
-
 
 # LOCAL MACHINE CONTROL
 
@@ -58,8 +61,14 @@ https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 # Steps
 
 https://thenewstack.io/tutorial-a-gitops-deployment-with-flux-on-digitalocean-kubernetes/
+https://github.com/fluxcd/flux2-multi-tenancy
+https://www.gitops.tech/
+https://blog.gurock.com/implement-ab-testing-using-kubernetes/
+https://docs.gitlab.com/ee/ci/introduction/
+https://tanzu.vmware.com/developer/guides/prometheus-multicluster-monitoring/
 
 ## Authenticate Digital Ocean CLI
+
 - Authenticate with personal access token
     - doctl auth init --context <NAME>
 - Show contexts
@@ -75,7 +84,7 @@ https://thenewstack.io/tutorial-a-gitops-deployment-with-flux-on-digitalocean-ku
 
     - doctl k8s clusters kubeconfig save k8s-1-23-9-do-0-fra1-1660326304303
 
-## kubectl
+## kubectl swith context (switch cluster)
 
 Note: kubectl uses the default kubeconfig file, $HOME/.kube/config.
 
@@ -89,9 +98,17 @@ Note: kubectl uses the default kubeconfig file, $HOME/.kube/config.
 - Check flux/cluster compatibility
     - flux check --pre
 
+- Show cluster namespaces
+    - kubectl get ns
 
-- If KUBECONFIG does not exist, kubectl uses the default kubeconfig file, $HOME/.kube/config.
-You can quickly switch between clusters by using the kubectl config use-context command.
+- List all pods in the namespace
+    - kubectl get pods
+
+- List all kustomizations and their status
+    - flux get kustomizations
+
+- Set up security credentials. Add ssh deployment key to CI/CD provider (GitLab)
+    - flux identity
 
 
 installing flux on kubernetes
