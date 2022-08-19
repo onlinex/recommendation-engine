@@ -1,9 +1,17 @@
 name: ci
 on:
+  #push:
+  #  branches:
+  #  - 'main'
+  #  - 'dev'
+  pull_request:
+    branches:
+      - 'main'  # handle pull requests to the main branch
   push:
     branches:
-    - 'main'
-    - 'dev'
+      - 'main'
+      - 'dev'
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,9 +42,12 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./ # starting directory
-          push: true
           file: ./Dockerfile
+          push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:latest
-
-
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:latest
+          cache-to: type=inline
+      #
       - run: echo "This job's status is ${{ job.status }}."
+
+      
