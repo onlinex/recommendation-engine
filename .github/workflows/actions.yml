@@ -7,10 +7,10 @@ on:
   pull_request:
     branches:
       - 'main'  # handle pull requests to the main branch
-  push:
-    branches:
-      - 'main'
-      - 'dev'
+#  push:
+#    branches:
+#      - 'main'
+#      - 'dev'
   
 jobs:
   build:
