@@ -107,17 +107,29 @@ Otherwise use: kubectl --kubeconfig=k8s-kubeconfig.yaml "some command here"
 - Check flux/cluster compatibility
     - flux check --pre
 
+- Install flux on kubernetes
+    The deploy key will be linked to the personal access token used to authenticate.
+
+    - flux bootstrap github \
+      --owner=my-github-username \
+      --repository=https://github.com/onlinex/recommendation-engine.git \
+      --path=kubernetes/clusters/fra1 \
+      --branch=main \
+      --personal
+
 - Show cluster namespaces
     - kubectl get ns
 
-- List all pods in the namespace
-    - kubectl get pods
+- List all pods in the namespace ("default" is standard)
+    - kubectl get pods --namespace=<insert namespace here>
 
 - List all kustomizations and their status
     - flux get kustomizations
 
 - Set up security credentials. Add ssh deployment key to CI/CD provider (GitLab)
     - flux identity
+
+## Add webhook (Trigger a cluster reconciliation every time a source changes)
 
 
 installing flux on kubernetes
@@ -132,8 +144,25 @@ flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap g
 
 # Repository structure
 
-- clusters dir contains the Flux configuration per cluster
+kubernetes
+├── apps
+│   ├── 
+│   ├──
+│   └── 
+├── infrastructure
+│   ├── 
+│   ├── 
+│   └── 
+└── clusters
+    ├── nyc1 (New York)
+    ├── fra1 (Frankfurt)
+    ├── lon1 (London)
+    ├── sgp1 (Singapore)
+    └── staging (Additional cluster located anywhere, for staging)
 
+Production clusters sync automatically with main branch.
+Staging cluster sync automatically with stage branch.
+Staging cluster also has integration testing pipeline.
 
 # Something else here
 

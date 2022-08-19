@@ -28,7 +28,6 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    print('hello')
     return {"message": "Hello World!"}
 
 # Record a user/item interaction
