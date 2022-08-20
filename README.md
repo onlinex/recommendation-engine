@@ -156,10 +156,10 @@ Kustomize allows declarative management of kubernetes.
     - kubectl get ns
 
 - List all pods in the namespace ("default" is standard)
-    - kubectl get pods --namespace=<insert namespace here>
+    - kubectl get pods --namespace="insert namespace here"
 
 - List tracked repositories by flux
-    kubectl get gitrepositories --namespace=flux-system
+    - kubectl get gitrepositories --namespace=flux-system
 
 ## Add infrastructure components (Ingress)
 
@@ -177,6 +177,9 @@ Kustomize allows declarative management of kubernetes.
 
 - List all kustomizations and their status
     - flux get kustomizations
+
+- Check controller
+    - kubectl get pods --namspace=ingress-system
 
 - Set up security credentials. Add ssh deployment key to CI/CD provider (GitLab)
     - flux identity
