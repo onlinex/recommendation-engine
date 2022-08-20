@@ -12,11 +12,40 @@
 - Some frontend
 - Metrics
 - Datree.io
+- Linkerd service mesh
+- Flagger
 - https://www.hellomonday.com/
 
 # CI / CD pipeline
 
 ![alt text](https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png)
+
+## Requirements
+
+- A/B testing \
+    Optionally test an update. \
+    Divert 5-10% of traffic between "primary" and "canary". \
+    Observe merics. \
+    Rollback. \
+
+- 0 Downtime deployment. \
+
+- Deploy to canary. \
+    - Contribute to main branch. \
+    - Build new main:version image. \
+    - FluxCD pull new image, route 10% traffic to canary. \
+
+- Deploy to primary. \
+    - Contribute to main branch with release tag. \
+    - Build new main:release-version image. \
+    - FluxCD pull new image, route traffic everywhere. \
+
+- No staging environment, staging blocks production. \
+- Test/Dev envioration and production environments' hardware should not mix. \
+
+Tag as release v* -> deploy to primary. \
+
+ 
 
 - Blue-Green deployment (0 downtime deployment)
 - A/B testing - very frequent automated testing
@@ -64,8 +93,10 @@ https://www.gitops.tech/
 https://blog.gurock.com/implement-ab-testing-using-kubernetes/
 https://docs.gitlab.com/ee/ci/introduction/
 https://tanzu.vmware.com/developer/guides/prometheus-multicluster-monitoring/
+https://fluxcd.io/docs/guides/image-update/
+https://squeaky.ai/blog/development/why-we-dont-use-a-staging-environment
 
-## Connect GitHub repository to container registry
+## Connect GitHub repository to container registry (Docker Hub)
 
 - Create a secret. Secrets are environment variables that are encrypted.
     - Settings > Secrets > New secret.
@@ -104,18 +135,22 @@ Otherwise use: kubectl --kubeconfig=k8s-kubeconfig.yaml "some command here"
 
 ## Flux
 
+Kustomize allows declarative management of kubernetes.
+
 - Check flux/cluster compatibility
     - flux check --pre
 
 - Install flux on kubernetes
-    The deploy key will be linked to the personal access token used to authenticate.
+    The deploy key will be linked to the personal access token used to authenticate. \
 
     - flux bootstrap github \
-      --owner=my-github-username \
-      --repository=https://github.com/onlinex/recommendation-engine.git \
+      --owner=onlinex \
+      --repository=recommendation-engine \
       --path=kubernetes/clusters/fra1 \
       --branch=main \
       --personal
+      
+    Flux GitOps agent is now running
 
 - Show cluster namespaces
     - kubectl get ns
@@ -123,8 +158,27 @@ Otherwise use: kubectl --kubeconfig=k8s-kubeconfig.yaml "some command here"
 - List all pods in the namespace ("default" is standard)
     - kubectl get pods --namespace=<insert namespace here>
 
+- List tracked repositories by flux
+    kubectl get gitrepositories --namespace=flux-system
+
 - List all kustomizations and their status
     - flux get kustomizations
+
+## Add infrastructure components (Ingress)
+
+- Add folder
+    - cd kubernetes
+    - mkdir infrastructure
+
+- Add ingress YAML files
+    - Each <cluster-name>/flux-system directory contains YAML artifiacts responsible for deploying Flux operator.
+    - Each <cluster-name> directory contains Kustomization YAML file, pointing to infrastructure components.
+    - Each <cluster-name> directory contains Kustomization YAML file, pointing to the apps components.
+    
+    - Apps directory contains information about the namespace, pod and service.
+    - Infrastructure directory contains ingress controller.
+
+
 
 - Set up security credentials. Add ssh deployment key to CI/CD provider (GitLab)
     - flux identity
@@ -144,21 +198,22 @@ flux --kubeconfig=k8s-1-23-9-do-0-fra1-1660326304303-kubeconfig.yaml bootstrap g
 
 # Repository structure
 
-kubernetes
-├── apps
-│   ├── 
-│   ├──
-│   └── 
-├── infrastructure
-│   ├── 
-│   ├── 
-│   └── 
-└── clusters
-    ├── nyc1 (New York)
-    ├── fra1 (Frankfurt)
-    ├── lon1 (London)
-    ├── sgp1 (Singapore)
-    └── staging (Additional cluster located anywhere, for staging)
+kubernetes \
+├── apps \
+│   ├── base (initial configuration) \
+│   ├── production (inherited from base) \
+│   └── staging (inherited from base) \
+├── infrastructure \
+│   ├── \
+│   ├── \
+│   └── \
+└── clusters \
+    ├── nyc1 (New York) \
+        ├── flux-system (stores manifests for the Flux components) \
+    ├── fra1 (Frankfurt) \
+    ├── lon1 (London) \
+    ├── sgp1 (Singapore) \
+    └── staging (Additional cluster located anywhere, for staging) \
 
 Production clusters sync automatically with main branch.
 Staging cluster sync automatically with stage branch.
