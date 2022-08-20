@@ -161,9 +161,6 @@ Kustomize allows declarative management of kubernetes.
 - List tracked repositories by flux
     kubectl get gitrepositories --namespace=flux-system
 
-- List all kustomizations and their status
-    - flux get kustomizations
-
 ## Add infrastructure components (Ingress)
 
 - Add folder
@@ -178,7 +175,8 @@ Kustomize allows declarative management of kubernetes.
     - Apps directory contains information about the namespace, pod and service.
     - Infrastructure directory contains ingress controller.
 
-
+- List all kustomizations and their status
+    - flux get kustomizations
 
 - Set up security credentials. Add ssh deployment key to CI/CD provider (GitLab)
     - flux identity

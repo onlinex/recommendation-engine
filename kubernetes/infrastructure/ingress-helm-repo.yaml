@@ -1,0 +1,10 @@
+# helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+# helm repo update (fetch the HelmRepository index every 30 mins)
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: ingress-nginx
+  namespace: flux-system
+spec:
+  interval: 30m
+  url: https://kubernetes.github.io/ingress-nginx
