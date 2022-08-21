@@ -194,6 +194,17 @@ Kustomize allows declarative management of kubernetes.
 - Try (if validation fails)
     - kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
 
+- Manage image repositories
+    - flux get image repository gateway
+    - flux get image policy gateway
+
+- Place policy marker
+    - {"$imagepolicy": "policy-namespace:policy-name"}
+    - {"$imagepolicy": "policy-namespace:policy-name:tag"}
+    - {"$imagepolicy": "policy-namespace:policy-name:name"}
+    \
+    These markers are placed inline in the target YAML, as a comment. 
+
 ## System
 
 - Check cpu/memory \
@@ -203,7 +214,6 @@ Kustomize allows declarative management of kubernetes.
 
 - Drain the cluster node (clear from pods) \
     - kubectl drain pool-00jd07iv2-7uxuv --delete-emptydir-data --ignore-daemonsets
-
 
 ## Add webhook (Trigger a cluster reconciliation every time a source changes)
 

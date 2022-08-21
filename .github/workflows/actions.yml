@@ -44,7 +44,7 @@ jobs:
           context: ./ # starting directory
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:0.0.0
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:0.0.1
           cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:latest
           cache-to: type=inline
       #
