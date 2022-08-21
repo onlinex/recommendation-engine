@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: gateway-ingress # this ingress is for the api gateway
+  name: api-ingress # this ingress is for the api gateway
   namespace: app
 spec:
   rules:
