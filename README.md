@@ -186,6 +186,9 @@ Kustomize allows declarative management of kubernetes.
 - Check controller
     - kubectl get pods --namspace=ingress-system
 
+- Try (if validation fails)
+    - kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+
 ## System
 
 - Check cpu/memory \

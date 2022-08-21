@@ -2,23 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
-  namespace: mywebapp
+  name: gateway
+  namespace: app
   labels:
-    name: web
-    app: mywebapp
+    name: gateway
 spec:
   replicas: 3
   selector:
       matchLabels:
-        name: web  
+        name: gateway
   template:
     metadata:
       labels:
-        name: web
+        name: gateway
     spec:
       containers:
-      - name: web 
+      - name: gateway
         image: onlinex/app:latest
         ports:
         - containerPort: 80
