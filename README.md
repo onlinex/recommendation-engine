@@ -72,6 +72,8 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 # TODO
 
 - API over https, Let's encrypt
+- Datree linter
+- Release version support
 - Deployment pipline
 - Cloudflare ensure routing to servers
 
@@ -152,7 +154,11 @@ Kustomize allows declarative management of kubernetes.
       --repository=recommendation-engine \
       --path=kubernetes/clusters/fra1 \
       --branch=main \
-      --personal
+      --personal \
+      --components-extra=image-reflector-controller,image-automation-controller \
+
+    The image-reflector-controller scans image repositories.\
+    The image-automation-controller updates YAML files based on the latest images scanned, and commits the changes to a given Git repository. \
       
     Flux GitOps agent is now running
 
