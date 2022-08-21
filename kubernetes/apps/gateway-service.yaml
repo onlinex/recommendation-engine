@@ -5,7 +5,7 @@ metadata:
   name: api # API service
   namespace: app # run in "app" namespace
   labels:
-    name: api
+    name: api # Label "api" for api-ingress to find
 spec:
   selector:
     name: gateway # target pods with "gateway" name label 
