@@ -28,7 +28,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World! This message was sent from Kubernetes"}
+    return {"message": "Hello World! This message was sent from Kubernetes!"}
 
 # Record a user/item interaction
 @app.post("/interaction/")
