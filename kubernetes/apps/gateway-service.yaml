@@ -1,3 +1,4 @@
+# targets TCP port 80 on any Pod with the app.kubernetes.io/name=gateway label.
 apiVersion: v1
 kind: Service
 metadata:
@@ -5,10 +6,9 @@ metadata:
   namespace: app
   labels:
     name: gateway
-    app: app
 spec:
   selector:
-    name: gateway
+    app.kubernetes.io/name: gateway
   type: ClusterIP
   ports:
    - name: http
