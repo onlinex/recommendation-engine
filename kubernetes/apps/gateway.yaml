@@ -7,7 +7,7 @@ metadata:
   labels:
     name: gateway
 spec:
-  replicas: 4
+  replicas: 3
   selector:
       matchLabels:
         name: gateway
@@ -19,5 +19,6 @@ spec:
       containers:
       - name: gateway
         image: onlinex/app:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
