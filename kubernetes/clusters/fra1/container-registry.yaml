@@ -1,3 +1,5 @@
+---
+# Use the CRD ImageRepository to track your image
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImageRepository
 metadata:
@@ -6,3 +8,16 @@ metadata:
 spec:
   image: onlinex/app
   interval: 1m0s
+---
+# Use the CRD ImagePolicy to specify which version you want to track.
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: gateway
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: gateway
+  policy:
+    semver:
+      range: '>=0.0.0'
