@@ -212,6 +212,9 @@ Kustomize allows declarative management of kubernetes.
 - Check controller
     - kubectl get pods --namspace=ingress-system
 
+- Check running images
+    - kubectl get pods --namespace=app -o jsonpath="{.items[*].spec.containers[*].image}"
+
 ## System
 
 - Check cpu/memory \

@@ -44,8 +44,8 @@ jobs:
           context: ./ # starting directory
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:0.0.1
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:0.0.2
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:0.0.1
           cache-to: type=inline
       #
       - run: echo "This job's status is ${{ job.status }}."
