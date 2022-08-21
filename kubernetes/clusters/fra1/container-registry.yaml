@@ -22,3 +22,30 @@ spec:
   policy:
     semver:
       range: '>=0.0.0'
+---
+# ImageUpdateAutomation runs all the policies found in its namespace at the specified interval.
+# Flux will push a commit to the repository with the latest image tag that matches the podinfo policy.
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageUpdateAutomation
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+      messageTemplate: '{{range .Updated.Images}}{{println .}}{{end}}'
+    push:
+      branch: main
+  update:
+    path: ./kubernetes/clusters/fra1
+    strategy: Setters
