@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: gateway-ingress
-  namespace: app
+  name: mywebapp-ingress
+  namespace: mywebapp
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
@@ -13,6 +13,6 @@ spec:
            path: "/" 
            backend:
              service:
-               name: gateway
+               name: web
                port:
                  number: 80
