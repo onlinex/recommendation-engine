@@ -162,15 +162,6 @@ Kustomize allows declarative management of kubernetes.
       
     Flux GitOps agent is now running
 
-- Show cluster namespaces
-    - kubectl get ns
-
-- List all pods in the namespace ("default" is standard)
-    - kubectl get pods --namespace="insert namespace here"
-
-- List tracked repositories by flux
-    - kubectl get gitrepositories --namespace=flux-system
-
 ## Add infrastructure components (Ingress)
 
 - Add folder
@@ -185,16 +176,12 @@ Kustomize allows declarative management of kubernetes.
     - Apps directory contains information about the namespace, pod and service.
     - Infrastructure directory contains ingress controller.
 
+## Flux checks
+
 - List all kustomizations and their status
     - flux get kustomizations
 
-- Check controller
-    - kubectl get pods --namspace=ingress-system
-
-- Try (if validation fails)
-    - kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
-
-- Manage image repositories
+- Manage image repositories (should only be in one cluster)
     - flux get image repository gateway
     - flux get image policy gateway
 
@@ -203,7 +190,27 @@ Kustomize allows declarative management of kubernetes.
     - {"$imagepolicy": "policy-namespace:policy-name:tag"}
     - {"$imagepolicy": "policy-namespace:policy-name:name"}
     \
-    These markers are placed inline in the target YAML, as a comment. 
+    These markers are placed inline in the target YAML, as a comment.
+
+## Kubectl checks
+
+- Show cluster namespaces
+    - kubectl get ns
+
+- List all pods in the namespace ("default" is standard)
+    - kubectl get pods --namespace="insert namespace here"
+
+- List tracked repositories by flux
+    - kubectl get gitrepositories --namespace=flux-system
+
+- See the ReplicaSet created by Deployment
+    - kubectl get rs --namespace=app
+
+- Try (if validation fails)
+    - kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+
+- Check controller
+    - kubectl get pods --namspace=ingress-system
 
 ## System
 
@@ -246,10 +253,10 @@ kubernetes \
     ├── lon1 (London) \
     ├── sgp1 (Singapore) \
     └── staging (Additional cluster located anywhere, for staging) \
-
-Production clusters sync automatically with main branch.
-Staging cluster sync automatically with stage branch.
-Staging cluster also has integration testing pipeline.
+\
+Production clusters sync automatically with main branch. \
+Staging cluster sync automatically with stage branch. \
+Staging cluster also has integration testing pipeline. \
 
 # Something else here
 

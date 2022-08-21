@@ -8,17 +8,18 @@ metadata:
     name: gateway
 spec:
   replicas: 3
-  selector:
+  revisionHistoryLimit: 5 # Number of old ReplicaSets to retain to allow rollback.
+  selector: # defines how the Deployment finds which Pods to manage.
       matchLabels:
         name: gateway
-  template:
+  template: # Pod's template (the deployment is triggered only if this part is changed)
     metadata:
       labels:
         name: gateway
     spec:
       containers:
       - name: gateway
-        image: onlinex/app:0.0.0 # {"$imagepolicy": "flux-system:gateway"}
+        image: onlinex/app:0.0.1 # {"$imagepolicy": "flux-system:gateway"}
         imagePullPolicy: Always
         ports:
         - containerPort: 80
