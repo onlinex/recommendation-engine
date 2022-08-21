@@ -85,6 +85,11 @@ https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 - install flux (CLI for CI/CD)
 - isntall k9s (For looking into kubernetes cluster)
 
+# Cluster requirements
+
+- 2 Nodes
+    - 2vCPU, 2gb
+
 # Steps
 
 https://thenewstack.io/tutorial-a-gitops-deployment-with-flux-on-digitalocean-kubernetes/
@@ -181,8 +186,16 @@ Kustomize allows declarative management of kubernetes.
 - Check controller
     - kubectl get pods --namspace=ingress-system
 
-- Set up security credentials. Add ssh deployment key to CI/CD provider (GitLab)
-    - flux identity
+## System
+
+- Check cpu/memory \
+    Requests are what the container is guaranteed to get. \
+    Limits are the maximum value to be allocated. \
+    - kubectl describe node
+
+- Drain the cluster node (clear from pods) \
+    - kubectl drain pool-00jd07iv2-7uxuv --delete-emptydir-data --ignore-daemonsets
+
 
 ## Add webhook (Trigger a cluster reconciliation every time a source changes)
 
