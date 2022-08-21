@@ -70,10 +70,9 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 - Results in multiple docker images for multiple services
 
 # TODO
+
+- API over https, Let's encrypt
 - Deployment pipline
-- Webhook integration
-- FLUX (seems to be the best), ArgoCD, Fleet
-https://www.cncf.io/blog/2021/04/12/simplifying-multi-clusters-in-kubernetes/
 - Cloudflare ensure routing to servers
 
 # LOCAL MACHINE CONTROL
