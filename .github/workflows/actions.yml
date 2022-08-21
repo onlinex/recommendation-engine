@@ -45,7 +45,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:0.0.0
           cache-to: type=inline
       #
       - run: echo "This job's status is ${{ job.status }}."
