@@ -47,5 +47,5 @@ spec:
     push:
       branch: main
   update:
-    path: ./kubernetes/apps
+    path: ./kubernetes/apps # Path to the directory containing the manifests to be updated.
     strategy: Setters
