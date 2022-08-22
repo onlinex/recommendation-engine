@@ -13,7 +13,19 @@ on:
 #      - 'dev'
   
 jobs:
+  k8sPolicyCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Run Datree Policy Check
+        uses: datreeio/action-datree@main
+        with:
+          path: '**/*.yaml'
+          cliArguments: '--only-k8s-files'
   build:
+    needs: k8sPolicyCheck
     runs-on: ubuntu-latest
     steps:
       # some stats

@@ -156,6 +156,7 @@ Kustomize allows declarative management of kubernetes.
       --branch=main \
       --personal \
       --components-extra=image-reflector-controller,image-automation-controller \
+      --read-write-key
 
     The image-reflector-controller scans image repositories.\
     The image-automation-controller updates YAML files based on the latest images scanned, and commits the changes to a given Git repository. \
