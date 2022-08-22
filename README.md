@@ -72,9 +72,8 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 # TODO
 
 - API over https, Let's encrypt
-- Datree linter
-- Release version support
-- Deployment pipline
+- Automatic Release version support https://github.com/marketplace/actions/git-version
+- Trigger version change only for the module
 - Cloudflare ensure routing to servers
 
 # LOCAL MACHINE CONTROL
