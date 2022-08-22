@@ -185,6 +185,12 @@ Kustomize allows declarative management of kubernetes.
     - flux get image repository gateway
     - flux get image policy gateway
 
+- Get messages from image container registry handlers
+    - flux get images all --namespace=flux-system
+
+- Manual reconciliation
+    - flux reconcile kustomization flux-system --with-source
+
 - Place policy marker
     - {"$imagepolicy": "policy-namespace:policy-name"}
     - {"$imagepolicy": "policy-namespace:policy-name:tag"}
