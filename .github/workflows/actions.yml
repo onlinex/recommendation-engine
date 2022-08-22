@@ -11,9 +11,29 @@ on:
 #    branches:
 #      - 'main'
 #      - 'dev'
+
+env:
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }}
   
 jobs:
+  k8sPolicyCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Run Datree Policy Check
+        continue-on-error: true
+        uses: datreeio/action-datree@main
+        with:
+          path: '**/*.yaml'
+          cliArguments: '--only-k8s-files --ignore-missing-schemas'
+
+      - name: Run SUCCESS script
+        run: exit 0
+
   build:
+    needs: k8sPolicyCheck
     runs-on: ubuntu-latest
     steps:
       # some stats
