@@ -11,6 +11,9 @@ on:
 #    branches:
 #      - 'main'
 #      - 'dev'
+
+env:
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }}
   
 jobs:
   k8sPolicyCheck:
