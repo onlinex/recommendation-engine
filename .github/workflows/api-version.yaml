@@ -22,4 +22,4 @@ jobs:
         uses: codacy/git-version@2.5.4
         with:
           prefix: api-
-          log-path: api/
+          log-paths: api/
