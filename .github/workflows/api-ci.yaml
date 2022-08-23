@@ -53,7 +53,7 @@ jobs:
         id: gitVersion
         with:
           release-branch: main
-          dev-branch: dev
+          #dev-branch: dev
       - # Emulator, binaries for different hardware
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
