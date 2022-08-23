@@ -109,7 +109,6 @@ jobs:
           image_name_tag=$(docker load --input /tmp/api-snapshot.tar)
           docker image ls -a
           echo "res = ${image_name_tag:14}"
-          docker run -i ${image_name_tag:14} /bin/bash
-          poetry run pytest
+          docker run -i ${image_name_tag:14} poetry run pytest
 
 # flux testing server -> see new container -> push new v to master -> will start rebuild (
