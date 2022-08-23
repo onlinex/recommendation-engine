@@ -89,7 +89,7 @@ jobs:
       - 
         run: echo "This job's status is ${{ job.status }}."
 
-  test:
+  lint:
     if: github.event_name == 'pull_request' # came from the pull_request
     runs-on: ubuntu-latest
     needs: build
@@ -109,6 +109,9 @@ jobs:
           image_name_tag=$(docker load --input /tmp/api-snapshot.tar)
           docker image ls -a
           echo "res = ${image_name_tag:14}"
-          docker run -i ${image_name_tag:14} poetry run pytest
+          docker run -i ${image_name_tag:14} poetry run flake8
+      - 
+        name: Run SUCCESS script
+        run: exit 0
 
 # flux testing server -> see new container -> push new v to master -> will start rebuild (
