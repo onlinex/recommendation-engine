@@ -49,6 +49,10 @@ jobs:
       - name: Git Version
         uses: codacy/git-version@2.5.4
         id: gitVersion
+        with:
+          release-branch: main
+          dev-branch: dev
+
 
       # Login to docker hub
       - name: Login to Docker Hub
