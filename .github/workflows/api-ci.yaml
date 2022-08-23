@@ -40,6 +40,7 @@ jobs:
 
       - name: Git Version
         uses: codacy/git-version@2.5.4
+        id: gitVersion
 
       # Login to docker hub
       - name: Login to Docker Hub
@@ -66,7 +67,7 @@ jobs:
           cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:buildcache,mode=max
       #
       - run: echo "This job's status is ${{ job.status }}."
-      - run: echo "New Version $VERSION."
+      - run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
 # flux testing server
 # see updated docker container 
