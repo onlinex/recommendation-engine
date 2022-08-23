@@ -16,6 +16,12 @@
 - Flagger
 - https://www.hellomonday.com/
 
+Building a sucessfull business
+- Build in public, open source code.
+- Provide value first, without the expecation of return.
+- Target the market you care about.
+- Offer your services for free.
+
 # CI / CD pipeline
 
 ![alt text](https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png)
@@ -71,10 +77,37 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 
 # TODO
 
-- API over https, Let's encrypt
 - Automatic Release version support https://github.com/marketplace/actions/git-version
-- Trigger version change only for the module
+Trigger version change only for the module.
+Set up full CI/CD. Unit tests, Python linting, builds, versioning, module versioning, etc. Get version from $VERSION variable.
+
+- Free domain name
+- API over https, Let's encrypt
 - Cloudflare ensure routing to servers
+- DB
+- OAuth 2.0, token generation.
+- Sample webapp, ingress route traffic.
+- reCAPTCHA v3 (2018).
+- Record events to redis streams.
+- Save to DB.
+- ML app. Event vectorizer + Ranker.
+- Beautify.
+- Redis cache, performance improvements.
+- Service mesh.
+- Simple admin panel.
+- Design, logo, hellomonday.com, font. Please don't use blue. Everyone is using blue, it's boring. Blue = IBM / Intuit. It's old.
+Best color pallete is green/wood http://admin.pixelstrap.com/viho/theme/index.html.
+
+Colors:
+black/white: professional, clean
+green: nature, calm, good luck
+orange: warm, autumn
+brown: rustic, practical, warm, vintage
+
+- Analytics.
+- Better user experience.
+- Low latency scale to 3 AZ.
+- Cold Storage for user logs.
 
 # LOCAL MACHINE CONTROL
 
@@ -100,6 +133,8 @@ https://docs.gitlab.com/ee/ci/introduction/
 https://tanzu.vmware.com/developer/guides/prometheus-multicluster-monitoring/
 https://fluxcd.io/docs/guides/image-update/
 https://squeaky.ai/blog/development/why-we-dont-use-a-staging-environment
+https://devopswithkubernetes.com/part-4/3-gitops
+https://github.com/containrrr/watchtower
 
 ## Connect GitHub repository to container registry (Docker Hub)
 

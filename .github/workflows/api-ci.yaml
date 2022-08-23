@@ -1,0 +1,80 @@
+name: api-ci
+# trigger by pull request to main for the chainges in the *app directory
+on:
+  pull_request:
+    paths:
+      - .github/workflows/api-ci.yaml
+      - app/**
+    branches:
+      - main
+
+  # only rebuild on change in the app
+  push:
+    paths:
+      - .github/workflows/api-ci.yaml
+      - app/**
+    branches:
+      - main
+
+jobs:
+  # check k8s configurations
+  k8sPolicyCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Run Datree Policy Check
+        continue-on-error: true
+        uses: datreeio/action-datree@main
+        with:
+          path: '**/*.yaml'
+          cliArguments: '--only-k8s-files --ignore-missing-schemas'
+
+      - name: Run SUCCESS script
+        run: exit 0
+    
+  # build
+  build:
+    needs: [k8sPolicyCheck]
+    runs-on: ubuntu-latest
+    steps:
+      # checks-out our repository under $GITHUB_WORKSPACE, so our workflow can access it.
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}   # checkout the source branch of the pull request in a workflow run
+          fetch-depth: 0                # fetch the whole repo history
+
+      - name: Git Version
+        uses: codacy/git-version@2.5.4
+        id: gitVersion
+
+      # Login to docker hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      # Emulator, binaries for different hardware
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      # Docker build CLI
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      # Build and Push
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./ # starting directory
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }} # don't push on pull request (in testing phase)
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:${{ steps.gitVersion.outputs.version }}
+
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:buildcache,mode=max
+      #
+      - run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
+      - run: echo "This job's status is ${{ job.status }}."
+
+# flux testing server -> see new container -> push new v to master -> will start rebuild (
