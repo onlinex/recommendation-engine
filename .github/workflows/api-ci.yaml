@@ -105,6 +105,7 @@ jobs:
           path: /tmp
       -
         name: Load image
+        continue-on-error: true
         run: |
           image_name_tag=$(docker load --input /tmp/api-snapshot.tar)
           docker image ls -a
