@@ -104,13 +104,37 @@ jobs:
           name: api-snapshot
           path: /tmp
       -
-        name: Load image
+        name: Run Flake8
         continue-on-error: true
         run: |
           image_name_tag=$(docker load --input /tmp/api-snapshot.tar)
-          docker image ls -a
           echo "res = ${image_name_tag:14}"
           docker run -i ${image_name_tag:14} poetry run flake8
+      - 
+        name: Run SUCCESS script
+        run: exit 0
+
+  test:
+    if: github.event_name == 'pull_request' # came from the pull_request
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: api-snapshot
+          path: /tmp
+      -
+        name: Run Pytest
+        continue-on-error: true
+        run: |
+          image_name_tag=$(docker load --input /tmp/api-snapshot.tar)
+          echo "res = ${image_name_tag:14}"
+          docker run -i ${image_name_tag:14} poetry run pytest
       - 
         name: Run SUCCESS script
         run: exit 0
