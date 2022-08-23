@@ -3,7 +3,7 @@ name: api-ci
 on:
   pull_request:
     paths:
-      - .github/workflows/api-ci.yml
+      - .github/workflows/api-ci.yaml
       - app/**
     branches:
       - main
