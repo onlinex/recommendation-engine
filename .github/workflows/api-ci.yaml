@@ -69,7 +69,7 @@ jobs:
         with:
           context: ./ # starting directory
           file: ./Dockerfile
-          push: ${{ github.event_name != 'pull_request' } # don't push on pull request (in testing phase)
+          push: ${{ github.event_name != 'pull_request' }} # don't push on pull request (in testing phase)
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:${{ steps.gitVersion.outputs.version }}
 
           cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/app:buildcache
