@@ -77,8 +77,6 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 
 # TODO
 
-- Automatic Release version support https://github.com/marketplace/actions/git-version
-Trigger version change only for the module.
 Set up full CI/CD. Unit tests, Python linting, builds, versioning, module versioning, etc. Get version from $VERSION variable.
 
 - Free domain name

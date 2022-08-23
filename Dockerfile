@@ -26,6 +26,8 @@ RUN poetry install --no-dev
 
 # Copy the rest of the project
 COPY ./app /code/app
+# Copy testing code
+COPY ./tests /code/tests
 
 # TODO add --proxy-headers
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
