@@ -176,12 +176,14 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         name: 📦 Load container
         run: |
-          docker load --input /tmp/docker.tar
+          img = $(docker load --input /tmp/docker.tar)
+          echo "img = ${img:14}"
+
           docker image ls -a
       - 
         if: steps.changes.outputs.src == 'true'
         name: 🚀 Release
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:${{ steps.gitVersion.outputs.version }}
+        run: docker push ${img}
       -
         run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
