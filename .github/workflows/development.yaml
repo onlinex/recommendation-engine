@@ -40,7 +40,6 @@ jobs:
   ##################################
   docker:
     needs: 
-      - k8sPolicyCheck
       - lint
     runs-on: ubuntu-latest
     
