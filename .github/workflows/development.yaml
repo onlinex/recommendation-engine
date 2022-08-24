@@ -10,7 +10,7 @@ on:
   workflow_call:
 
 env:
-  APPS: [app]
+  APPS: (app)
 
 jobs:
   k8sPolicyCheck:
