@@ -13,7 +13,6 @@ jobs:
   # Check Kustomization complience
   ##################################
   k8sPolicyCheck:
-    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - 
@@ -34,7 +33,6 @@ jobs:
   # Check Python code complience
   ##################################
   lint:
-    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     name: Compliance
     steps:
