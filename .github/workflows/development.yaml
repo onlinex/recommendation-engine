@@ -96,3 +96,14 @@ jobs:
           if-no-files-found: ignore
       - 
         run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
+
+  cleanup:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: "♻️ remove build artifacts"
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            containers
+          failOnError: false
