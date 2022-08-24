@@ -91,7 +91,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: containers
-          path: /tmp/  # upload the directory
+          path: /tmp/${{ matrix.app }}.tar  # upload the directory
           retention-days: 1
           if-no-files-found: ignore
       - 
