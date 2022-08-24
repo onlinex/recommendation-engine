@@ -126,6 +126,8 @@ jobs:
           path: /tmp/**.tar
           retention-days: 1
           if-no-files-found: ignore
+      -
+        run: echo "New version onlinex/${{ matrix.service }}:${{ steps.gitVersion.outputs.version }}"
 
   ##################################
   # Release
@@ -177,15 +179,15 @@ jobs:
         name: 📦 Load container
         run: |
           img=$(docker load --input /tmp/docker.tar)
-          echo "img=${img:14}"
+          echo "img1=${img:14}"
 
           docker image ls -a
       - 
         if: steps.changes.outputs.src == 'true'
         name: 🚀 Release
         run: |
-          echo "$img"
-          docker image push $img
+          echo "$img1"
+          docker image push $img1
       -
         run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
@@ -195,7 +197,8 @@ jobs:
   ##################################
 
   cleanup:
-    needs: 
+    if: always()
+    needs:
       - release
     runs-on: ubuntu-latest
     steps:
