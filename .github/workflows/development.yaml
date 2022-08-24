@@ -7,9 +7,13 @@ on:
       - edited
       - synchronize
       - reopened
+#      - closed
   workflow_call:
 
 jobs:
+  ##################################
+  # Check Kustomization complience
+  ##################################
   k8sPolicyCheck:
     runs-on: ubuntu-latest
     steps:
@@ -26,7 +30,10 @@ jobs:
       - 
         name: success
         run: exit 0
-
+  
+  ##################################
+  # Check Python code complience
+  ##################################
   lint:
     runs-on: ubuntu-latest
     name: Compliance
@@ -49,6 +56,9 @@ jobs:
         name: Run SUCCESS script
         run: exit 0
 
+  ##################################
+  # Build changes if needed
+  ##################################
   docker:
     needs: 
       - k8sPolicyCheck
@@ -65,7 +75,7 @@ jobs:
         name: ☁️ Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}  # source branch of PR
+          ref: ${{ github.event.pull_request.head.sha }}  # source branch of PR github.head_ref
           fetch-depth: 0
       - 
         name: 🔧 Version

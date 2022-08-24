@@ -26,6 +26,17 @@ Building a sucessfull business
 
 ![alt text](https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png)
 
+https://codefresh.io/blog/enterprise-ci-cd-best-practices-part-1/
+
+- All project assets are in source control
+- A single artifact is produced for all environments
+- Artifacts move within pipelines (and not source revisions)
+- Development happens with short-lived branches (one per feature)
+- Store your dependencies
+- Tests are automated
+- Security scanning is part of the process
+- Quality scanning/Code reviews are part of the process
+
 ## Requirements
 
 - A/B testing \
