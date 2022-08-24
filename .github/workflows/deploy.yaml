@@ -133,7 +133,7 @@ jobs:
   # Release
   ##################################
 
-  tag:
+  tag: # feature: or breaking:
     needs:
       - docker
     runs-on: ubuntu-latest
@@ -155,7 +155,7 @@ jobs:
         name: 🚀 Tag release
         run: |
           echo "New Version ${{ steps.gitVersion.outputs.version }}."
-          git tag ${{ steps.gitVersion.outputs.version }}
+          git push origin ${{ steps.gitVersion.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
