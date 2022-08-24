@@ -132,4 +132,4 @@ jobs:
             app-artifact
           failOnError: false
       -
-        run: echo "Triggered by ${{ github.event_name }"
+        run: echo "Triggered by ${{ github.event_name }}"
