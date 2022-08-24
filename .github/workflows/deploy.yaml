@@ -1,19 +1,39 @@
-name: Development
+name: Release
 
 on:
   pull_request:
     types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
-  workflow_call:
+      - closed
+    branches:
+      - main
 
 jobs:
+  ##################################
+  # Check Kustomization complience
+  ##################################
+  k8sPolicyCheck:
+    if: github.event.pull_request.merged
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: ☁️ Checkout
+        uses: actions/checkout@v3
+      - 
+        name: 📊 Datree
+        uses: datreeio/action-datree@main
+        with:
+          path: '**/*.yaml'
+          cliArguments: '--only-k8s-files --ignore-missing-schemas'
+        continue-on-error: true
+      - 
+        name: success
+        run: exit 0
+
   ##################################
   # Check Python code complience
   ##################################
   lint:
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     name: Compliance
     steps:
@@ -40,6 +60,7 @@ jobs:
   ##################################
   docker:
     needs: 
+      - k8sPolicyCheck
       - lint
     runs-on: ubuntu-latest
     
@@ -55,6 +76,12 @@ jobs:
         with:
           ref: ${{ github.head_ref }}  # source branch of PR, to detach: github.event.pull_request.head.sha
           fetch-depth: 0
+      - 
+        name: Version
+        uses: codacy/git-version@2.5.4
+        with:
+          release-branch: main
+        id: gitVersion
       -
         name: 🔧 QEMU
         uses: docker/setup-qemu-action@v2
@@ -86,8 +113,8 @@ jobs:
           push: False
           file: ./Dockerfile
 
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:preprod # pre-release
-          outputs: type=docker,dest=/tmp/docker-image.tar
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:${{ steps.gitVersion.outputs.version }}
+          outputs: type=docker,dest=/tmp/docker.tar
 
           cache-from: type=gha,scope=${{ github.workflow }}
           cache-to: type=gha,scope=${{ github.workflow }}
@@ -99,8 +126,60 @@ jobs:
           path: /tmp/**.tar
           retention-days: 1
           if-no-files-found: ignore
+
+  ##################################
+  # Release
+  ##################################
+
+  release:
+    if: false
+    needs: 
+      - docker
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        service: [app]
+
+    name: Release ${{ matrix.service }}
+    steps:
       - 
+        name: 🔧 Filter
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '${{ matrix.service }}/**'
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      -
+        name: 🔧 Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        if: steps.changes.outputs.src == 'true'
+        name: 📂 Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.service }}-snapshot
+          path: /tmp
+      - 
+        if: steps.changes.outputs.src == 'true'
+        name: 📦 Load container
+        run: |
+          docker load --input /tmp/docker.tar
+          docker image ls -a
+      - 
+        if: steps.changes.outputs.src == 'true'
+        name: 🚀 Release
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:${{ steps.gitVersion.outputs.version }}
+      -
         run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
+
 
   ##################################
   # Clean
