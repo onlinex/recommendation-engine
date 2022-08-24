@@ -59,7 +59,7 @@ jobs:
     
     strategy:
       matrix:
-        app: ${APPS} #[app]
+        app: ${{ env.APPS }} #[app]
 
     name: build ${{ matrix.app }}
     steps:
