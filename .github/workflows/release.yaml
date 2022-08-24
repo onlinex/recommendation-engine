@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == 'true'
+    runs-on: ubuntu-latest
+    name: Release
+    steps:
+      - 
+        name: 🔧 Version
+        uses: codacy/git-version@2.5.4
+        with:
+          release-branch: main
+          dev-branch: dev
+        id: gitVersion
+      -
+        run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
+      - 
+        name: success
+        run: exit 0
