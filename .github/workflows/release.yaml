@@ -1,31 +1,30 @@
 name: Release
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
 
 jobs:
-  release:
-    if: github.event.pull_request.merged
-    runs-on: ubuntu-latest
-    name: Release
-    steps:
-      -
-        name: ☁️ Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref }}  # source branch of PR
-          fetch-depth: 0
-      - 
-        name: 🔧 Version
-        uses: codacy/git-version@2.5.4
-        with:
-          release-branch: main
-          dev-branch: dev
-        id: gitVersion
-      -
-        run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
-      - 
-        name: success
-        run: exit 0
+  develop:
+    name: Test and lint
+    uses: onlinex/recommendation-engine/.github/workflows/development.yaml@main
+
+#  release:
+#    runs-on: ubuntu-latest
+#    name: Build & Release
+#    if: github.event.pull_request.merged
+#    steps:
+#      -
+#        name: ☁️ Checkout
+#        uses: actions/checkout@v3
+#        with:
+#          ref: ${{ github.head_ref }}
+#          fetch-depth: 0
+#      -
+#        run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
+#      - 
+#        name: success
+#        run: exit 0
