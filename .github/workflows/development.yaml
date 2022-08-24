@@ -39,6 +39,7 @@ jobs:
   # Build, if detect changes in PR
   ##################################
   docker:
+    if: false
     needs: 
       - lint
     runs-on: ubuntu-latest
