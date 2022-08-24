@@ -153,11 +153,12 @@ jobs:
         id: gitVersion
       -
         name: 🚀 Tag release
-        run: |
-          echo "New Version ${{ steps.gitVersion.outputs.version }}."
-          git push origin ${{ steps.gitVersion.outputs.version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ steps.gitVersion.outputs.version }}
+      -
+        run: echo "New Version ${{ steps.gitVersion.outputs.version }}"
 
   release:
     needs: 
