@@ -167,7 +167,7 @@ jobs:
         name: 📂 Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ matrix.service }}-snapshot
+          name: ${{ matrix.service }}-artifact
           path: /tmp
       - 
         if: steps.changes.outputs.src == 'true'
@@ -193,7 +193,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - 
-        name: "♻️ remove build artifacts"
+        name: "♻️ Remove build artifacts"
         uses: geekyeggo/delete-artifact@v1
         with:
           name: |
