@@ -185,7 +185,7 @@ jobs:
         name: 🚀 Release
         run: |
           echo "$img"
-          docker push $img
+          docker image push $img
       -
         run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
