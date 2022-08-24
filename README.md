@@ -25,6 +25,7 @@ Building a sucessfull business
 # CI / CD pipeline
 
 ![alt text](https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png)
+![alt text](https://github.blog/wp-content/uploads/2022/01/workflow-visualizer.png?w=1600)
 
 https://codefresh.io/blog/enterprise-ci-cd-best-practices-part-1/
 
