@@ -29,6 +29,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    name: Compliance
     steps:
       -
         name: ☁️ Checkout
@@ -58,7 +59,7 @@ jobs:
       matrix:
         app: [app]
 
-    name: build ${{ matrix.app }}
+    name: Build ${{ matrix.app }}
     steps:
       -
         name: ☁️ Checkout
