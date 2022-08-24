@@ -141,6 +141,9 @@ jobs:
 
     name: Release ${{ matrix.service }}
     steps:
+      -
+        name: ☁️ Checkout
+        uses: actions/checkout@v3
       - 
         name: 🔧 Filter
         uses: dorny/paths-filter@v2
