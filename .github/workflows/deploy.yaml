@@ -176,8 +176,8 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         name: 📦 Load container
         run: |
-          img = $(docker load --input /tmp/docker.tar)
-          echo "img = ${img:14}"
+          img=$(docker load --input /tmp/docker.tar)
+          echo "img=${img:14}"
 
           docker image ls -a
       - 
