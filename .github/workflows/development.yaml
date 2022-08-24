@@ -1,0 +1,98 @@
+name: Development
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+  workflow_call:
+
+jobs:
+  k8sPolicyCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: ☁️ Checkout
+        uses: actions/checkout@v3
+      - 
+        name: 📊 Datree
+        uses: datreeio/action-datree@main
+        with:
+          path: '**/*.yaml'
+          cliArguments: '--only-k8s-files --ignore-missing-schemas'
+        continue-on-error: true
+      - 
+        name: success
+        run: exit 0
+
+  docker:
+    needs: k8sPolicyCheck
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        app: [app]
+
+    name: build ${{ matrix.app }}
+    steps:
+      -
+        name: ☁️ Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}  # source branch of PR
+          fetch-depth: 0
+      - 
+        name: 🔧 Version
+        uses: codacy/git-version@2.5.4
+        with:
+          release-branch: main
+          dev-branch: dev
+        id: gitVersion
+      -
+        name: 🔧 QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: 🔧 Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - 
+        name: 🔧 Cache docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - 
+        name: 🔧 Filter
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '${{ matrix.app }}/**'
+      -
+        name: 📦 Build & Save
+        if: steps.changes.outputs.src == 'true' # run if 'app' was changed
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: False
+          file: ./Dockerfile
+
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app:${{ steps.gitVersion.outputs.version }}
+          outputs: type=docker,dest=/tmp/${{ matrix.app }}.tar
+
+          cache-from: type=gha, scope=${{ github.workflow }}
+          cache-to: type=gha, scope=${{ github.workflow }}
+      -
+        name: 📂 Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: containers
+          path: /tmp/  # upload the directory
+          retention-days: 1
+          if-no-files-found: ignore
+      - 
+        run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
