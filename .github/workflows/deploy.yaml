@@ -177,17 +177,18 @@ jobs:
       - 
         if: steps.changes.outputs.src == 'true'
         name: 📦 Load container
+        id: container
         run: |
           img=$(docker load --input /tmp/docker.tar)
-          echo "img1=${img:14}"
-
           docker image ls -a
+
+          echo ::set-output name=docker_tag::${img:14}
       - 
         if: steps.changes.outputs.src == 'true'
         name: 🚀 Release
         run: |
-          echo "$img1"
-          docker image push $img1
+          echo "${{ steps.container.outputs.docker_tag }}"
+          docker image push ${{ steps.container.outputs.docker_tag }}
       -
         run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
