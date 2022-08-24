@@ -128,5 +128,5 @@ jobs:
         uses: geekyeggo/delete-artifact@v1
         with:
           name: |
-            containers
+            *
           failOnError: false
