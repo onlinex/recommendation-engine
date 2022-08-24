@@ -99,8 +99,6 @@ jobs:
           path: /tmp/**.tar
           retention-days: 1
           if-no-files-found: ignore
-      - 
-        run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
   ##################################
   # Clean
