@@ -39,6 +39,7 @@ jobs:
   # Build, if detect changes in PR
   ##################################
   docker:
+    if: false
     needs: 
       - lint
     runs-on: ubuntu-latest
@@ -99,8 +100,6 @@ jobs:
           path: /tmp/**.tar
           retention-days: 1
           if-no-files-found: ignore
-      - 
-        run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
   ##################################
   # Clean
