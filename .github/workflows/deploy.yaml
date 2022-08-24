@@ -77,7 +77,7 @@ jobs:
           ref: ${{ github.head_ref }}  # source branch of PR, to detach: github.event.pull_request.head.sha
           fetch-depth: 0
       - 
-        name: Version
+        name: 🔧 Version
         uses: codacy/git-version@2.5.4
         with:
           release-branch: main
@@ -113,7 +113,7 @@ jobs:
           push: False
           file: ./Dockerfile
 
-          tags: onlinex/${{ matrix.service }}:${{ steps.gitVersion.outputs.version }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:${{ steps.gitVersion.outputs.version }}
           outputs: type=docker,dest=/tmp/docker.tar
 
           cache-from: type=gha,scope=${{ github.workflow }}
@@ -132,6 +132,32 @@ jobs:
   ##################################
   # Release
   ##################################
+
+  tag:
+    needs:
+      - docker
+    runs-on: ubuntu-latest
+    name: Tag Release
+    steps:
+      -
+        name: ☁️ Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}  # source branch of PR, to detach: github.event.pull_request.head.sha
+          fetch-depth: 0
+      -
+        name: 🔧 Version
+        uses: codacy/git-version@2.5.4
+        with:
+          release-branch: main
+        id: gitVersion
+      -
+        name: 🚀 Tag release
+        run: |
+          echo "New Version ${{ steps.gitVersion.outputs.version }}."
+          git tag ${{ steps.gitVersion.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     needs: 
@@ -189,8 +215,6 @@ jobs:
         run: |
           echo "${{ steps.container.outputs.docker_tag }}"
           docker image push ${{ steps.container.outputs.docker_tag }}
-      -
-        run: echo "New Version ${{ steps.gitVersion.outputs.version }}."
 
 
   ##################################
