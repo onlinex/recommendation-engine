@@ -166,7 +166,7 @@ jobs:
           # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
           minor_pattern: "(MINOR)"
           # A string to determine the format of the version output
-          format: "${major}.${minor}.${patch}-prerelease${increment}"
+          format: "${major}.${minor}.${patch}"
         id: versionGit
       -
         run: echo "New Version ${{ steps.versionGit.outputs.version }}"
@@ -174,6 +174,8 @@ jobs:
         run: echo "New Version ${{ steps.versionGit.outputs.version_tag }}"
       -
         run: echo "New Version ${{ steps.versionGit.outputs.changed }}"
+        -
+        run: echo "New Version ${{ steps.versionGit.outputs.increment }}"
 
   tag: # feature: or breaking:
     needs:
