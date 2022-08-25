@@ -74,13 +74,14 @@ jobs:
         name: ☁️ Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}  # source branch of PR, to detach: github.event.pull_request.head.sha
+          ref: ${{ github.base_ref }}
           fetch-depth: 0
       - 
         name: 🔧 Version
-        uses: codacy/git-version@2.5.4
+        uses: paulhatch/semantic-version@v4.0.2
         with:
-          release-branch: main
+          tag_prefix: "v"
+          format: "${major}.${minor}.${patch}"
         id: gitVersion
       -
         name: 🔧 QEMU
@@ -127,57 +128,14 @@ jobs:
           retention-days: 1
           if-no-files-found: ignore
       -
+        if: steps.changes.outputs.src == 'true'
         run: echo "New version onlinex/${{ matrix.service }}:${{ steps.gitVersion.outputs.version }}"
 
   ##################################
   # Release
   ##################################
 
-  test:
-    needs:
-      - docker
-    runs-on: ubuntu-latest
-    name: Tag
-    steps:
-      -
-        name: ☁️ Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.base_ref }}  # source branch of PR, to detach: github.event.pull_request.head.sha
-          fetch-depth: 0
-      -
-        name: 🔧 Version
-        uses: codacy/git-version@2.5.4
-        with:
-          release-branch: main
-          prefix: 'v'
-        id: gitVersion
-      -
-        run: echo "New Version ${{ steps.gitVersion.outputs.version }}"
-      -
-        name: version 2
-        uses: paulhatch/semantic-version@v4.0.2
-        with:
-          # The prefix to use to identify tags
-          tag_prefix: "v"
-          # A string which, if present in a git commit, indicates that a change represents a
-          # major (breaking) change, supports regular expressions wrapped with '/'
-          major_pattern: "(MAJOR)"
-          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
-          minor_pattern: "(MINOR)"
-          # A string to determine the format of the version output
-          format: "${major}.${minor}.${patch}"
-        id: versionGit
-      -
-        run: echo "New Version ${{ steps.versionGit.outputs.version }}"
-      -
-        run: echo "New Version ${{ steps.versionGit.outputs.version_tag }}"
-      -
-        run: echo "New Version ${{ steps.versionGit.outputs.changed }}"
-      -
-        run: echo "New Version ${{ steps.versionGit.outputs.increment }}"
-
-  tag: # feature: or breaking:
+  tag:
     needs:
       - docker
     runs-on: ubuntu-latest
@@ -187,22 +145,23 @@ jobs:
         name: ☁️ Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}  # source branch of PR, to detach: github.event.pull_request.head.sha
+          ref: ${{ github.base_ref }}
           fetch-depth: 0
       -
         name: 🔧 Version
-        uses: codacy/git-version@2.5.4
+        uses: paulhatch/semantic-version@v4.0.2
         with:
-          release-branch: main
+          tag_prefix: "v"
+          format: "${major}.${minor}.${patch}"
         id: gitVersion
       -
         name: 🚀 Tag release
         uses: mathieudutour/github-tag-action@v6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ steps.gitVersion.outputs.version }}
+          custom_tag: ${{ steps.gitVersion.outputs.version_tag }}
       -
-        run: echo "New Version ${{ steps.gitVersion.outputs.version }}"
+        run: echo "New Version ${{ steps.gitVersion.outputs.version_tag }}"
 
   release:
     needs: 
