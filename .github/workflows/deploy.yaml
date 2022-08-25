@@ -160,6 +160,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.gitVersion.outputs.version_tag }}
+          WITH_V: false
       -
         run: echo "New Version ${{ steps.gitVersion.outputs.version_tag }}"
 
