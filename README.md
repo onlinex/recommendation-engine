@@ -28,6 +28,8 @@ Building a sucessfull business
 ![alt text](https://github.blog/wp-content/uploads/2022/01/workflow-visualizer.png?w=1600)
 
 https://codefresh.io/blog/enterprise-ci-cd-best-practices-part-1/
+https://frontside.com/blog/2020-05-26-github-actions-pull_request/
+https://developer.chrome.com/docs/lighthouse/overview/
 
 - All project assets are in source control
 - A single artifact is produced for all environments
@@ -90,6 +92,7 @@ https://docs.docker.com/develop/develop-images/multistage-build/
 # TODO
 
 Set up full CI/CD. Unit tests, Python linting, builds, versioning, module versioning, etc. Get version from $VERSION variable.
+- Tag change decided on push, on the destination!
 
 - Free domain name
 - API over https, Let's encrypt
