@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: onlinex/app:0.0.1 # {"$imagepolicy": "flux-system:gateway"}
+        image: onlinex/app:0.0.3 # {"$imagepolicy": "flux-system:gateway"}
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
