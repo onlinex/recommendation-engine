@@ -174,7 +174,7 @@ jobs:
         run: echo "New Version ${{ steps.versionGit.outputs.version_tag }}"
       -
         run: echo "New Version ${{ steps.versionGit.outputs.changed }}"
-        -
+      -
         run: echo "New Version ${{ steps.versionGit.outputs.increment }}"
 
   tag: # feature: or breaking:
