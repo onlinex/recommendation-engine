@@ -150,9 +150,30 @@ jobs:
         uses: codacy/git-version@2.5.4
         with:
           release-branch: main
+          prefix: 'v'
         id: gitVersion
       -
         run: echo "New Version ${{ steps.gitVersion.outputs.version }}"
+      -
+        name: version 2
+        uses: paulhatch/semantic-version@v4.0.2
+        with:
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+          major_pattern: "(MAJOR)"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "(MINOR)"
+          # A string to determine the format of the version output
+          format: "${major}.${minor}.${patch}-prerelease${increment}"
+        id: versionGit
+      -
+        run: echo "New Version ${{ steps.versionGit.outputs.version }}"
+      -
+        run: echo "New Version ${{ steps.versionGit.outputs.version_tag }}"
+      -
+        run: echo "New Version ${{ steps.versionGit.outputs.changed }}"
 
   tag: # feature: or breaking:
     needs:
